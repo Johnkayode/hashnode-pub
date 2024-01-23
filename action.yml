@@ -1,0 +1,10 @@
+name: 'Publish Blog Post'
+description: 'Publishes blog post to Github'
+inputs:
+  filename:  
+    description: 'Post to publish'
+    required: true
+    default: 'Hello World'
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
