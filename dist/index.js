@@ -30790,20 +30790,57 @@ module.exports = parseParams
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
+const fs = __nccwpck_require__(7147)
 const core = __nccwpck_require__(4181);
 const github = __nccwpck_require__(2726);
 
-try {
-  
-  const post = core.getInput('filename');
-  console.log(post);
-  
-  // Get the JSON webhook payload for the event that triggered the workflow
-  const payload = JSON.stringify(github.context.payload, undefined, 2)
-  console.log(`The event payload: ${payload}`);
-} catch (error) {
-  core.setFailed(error.message);
+const endpoint = 'https://gql.hashnode.com/'
+
+
+async function publishPost (postOptions) {
+    try {
+        response = {
+            "id": "hashnodeId",
+            "url": "https://hashnode.com/nerdthejohn"
+        }
+        core.setOutput('id', response.id)
+        core.setOutput('url', response.url)
+    
+    } catch (error) {
+      core.setFailed(error.message);
+    }
 }
+
+async function main () {
+    try {
+        const accessToken = core.getInput('access_token', { required: true })
+
+        const publicationId = core.getInput('publication_id', { required: true })
+        const title = core.getInput('title', { required: true })
+        const subtitle = core.getInput('subtitle')
+        const markdownFile = core.getInput('markdown', { required: true });
+
+        const markdownBody = await fs.readFile(markdownFile, 'utf8');
+
+        const postOptions = {
+            title,
+            subtitle,
+            publicationId,
+            markdownBody,
+        }
+
+        await publishPost(postOptions)
+
+    } catch (error) {
+        core.debug(error)
+        core.setFailed(error.message)
+        process.exit(1)
+    }
+    
+}
+
+main()
+
 })();
 
 module.exports = __webpack_exports__;

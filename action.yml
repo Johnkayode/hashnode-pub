@@ -1,10 +1,31 @@
 name: 'Publish Blog Post'
-description: 'Publishes blog post to Github'
+description: 'Publishes blog post to Hashnode'
+author: 'nerdthejohn'
+
+
 inputs:
-  filename:  
-    description: 'Post to publish'
+  title:
     required: true
-    default: 'Hello World'
+    description: 'fgg'
+  subtitle:
+    required: false
+    description: ''
+  publication_id:
+    required: true
+    description: 'The ID of publication the post belongs to.'
+  markdown:  
+    description: 'Filepath to the markdown file to publish'
+    required: true
+  access_token:
+    description: "Hashnode developer access token"
+    required: true
+
+outputs:
+  id:
+    description: The ID of the new blog post.
+  url:
+    description: The URL of the new blog post.
+
 runs:
   using: 'node20'
   main: 'dist/index.js'
