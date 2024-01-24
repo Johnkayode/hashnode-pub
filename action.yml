@@ -6,10 +6,10 @@ author: 'nerdthejohn'
 inputs:
   title:
     required: true
-    description: 'fgg'
+    description: 'title of the post'
   subtitle:
     required: false
-    description: ''
+    description: 'description of the post'
   publication_id:
     required: true
     description: 'The ID of publication the post belongs to.'

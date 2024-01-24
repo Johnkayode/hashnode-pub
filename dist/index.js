@@ -28970,6 +28970,14 @@ module.exports = require("fs");
 
 /***/ }),
 
+/***/ 3292:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("fs/promises");
+
+/***/ }),
+
 /***/ 3685:
 /***/ ((module) => {
 
@@ -30790,7 +30798,7 @@ module.exports = parseParams
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-const fs = __nccwpck_require__(7147)
+const fs = __nccwpck_require__(3292)
 const core = __nccwpck_require__(4181);
 const github = __nccwpck_require__(2726);
 
@@ -30819,9 +30827,10 @@ async function main () {
         const title = core.getInput('title', { required: true })
         const subtitle = core.getInput('subtitle')
         const markdownFile = core.getInput('markdown', { required: true });
+        markdownFile = "README.md"
 
-        const markdownBody = await fs.readFile(markdownFile, 'utf8');
-
+        const markdownBody = await fs.readFile(markdownFile, { encoding: 'utf-8' });
+      
         const postOptions = {
             title,
             subtitle,

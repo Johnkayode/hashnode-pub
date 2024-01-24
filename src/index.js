@@ -1,4 +1,4 @@
-const fs = require('fs')
+const fs = require('fs/promises')
 const core = require('@actions/core');
 const github = require('@actions/github');
 
@@ -27,9 +27,10 @@ async function main () {
         const title = core.getInput('title', { required: true })
         const subtitle = core.getInput('subtitle')
         const markdownFile = core.getInput('markdown', { required: true });
+        markdownFile = "README.md"
 
-        const markdownBody = await fs.readFile(markdownFile, 'utf8');
-
+        const markdownBody = await fs.readFile(markdownFile, { encoding: 'utf-8' });
+      
         const postOptions = {
             title,
             subtitle,
