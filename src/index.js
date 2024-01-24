@@ -1,18 +1,41 @@
 const fs = require('fs/promises')
 const core = require('@actions/core');
-const github = require('@actions/github');
+const axios = require('axios');
 
 const endpoint = 'https://gql.hashnode.com/'
 
 
-async function publishPost (postOptions) {
+async function publishPost (authOptions, postOptions) {
+
     try {
-        let response = {
-            "id": "hashnodeId",
-            "url": "https://hashnode.com/nerdthejohn"
+        const query = `
+            mutation PublishPost($input: PublishPostInput!) {
+                publishPost(input: $input) {
+                post {
+                    id
+                    slug
+                    url
+                }
+                }
+            }
+        `;
+        const variables = {
+            "input": {
+                "title": postOptions.title,
+                "subtitle": postOptions.subtitle,
+                "publicationId": postOptions.publicationId,
+                "contentMarkdown": postOptions.markdownBody,
+                "tags": postOptions.tags
+            }
         }
-        core.setOutput('id', response.id)
-        core.setOutput('url', response.url)
+        const requestBody = {
+            query,
+            variables
+        };
+        let response = await axios.post(endpoint, requestBody, { headers: authOptions })
+
+        core.setOutput('id', response.data.publishPost.post.id)
+        core.setOutput('url', response.data.publishPost.post.url)
     
     } catch (error) {
       core.setFailed(error.message);
@@ -22,23 +45,26 @@ async function publishPost (postOptions) {
 async function main () {
     try {
         const accessToken = core.getInput('access_token', { required: true })
-
+       
         const publicationId = core.getInput('publication_id', { required: true })
         const title = core.getInput('title', { required: true })
         const subtitle = core.getInput('subtitle')
         const markdownFile = core.getInput('markdown', { required: true });
+
+        const tags = [] // TODO: Allow tags
        
 
         const markdownBody = await fs.readFile(markdownFile, { encoding: 'utf-8' });
-      
         const postOptions = {
             title,
             subtitle,
             publicationId,
             markdownBody,
+            tags
         }
+        authOptions = { "Authorization": accessToken }
 
-        await publishPost(postOptions)
+        publishPost(authOptions, postOptions)
 
     } catch (error) {
         core.debug(error)
