@@ -27,7 +27,6 @@ async function main () {
         const title = core.getInput('title', { required: true })
         const subtitle = core.getInput('subtitle')
         const markdownFile = core.getInput('markdown', { required: true });
-        markdownFile = "README.md"
 
         const markdownBody = await fs.readFile(markdownFile, { encoding: 'utf-8' });
       
