@@ -62,7 +62,7 @@ jobs:
           title: Testing this great little action
           publication_id: '[Publication ID (from URL)]'
           markdown: '[Path to Markdown file e.g README.md]'
-          access_token: '[your hashnode developer access token ]'
+          access_token: '${{ secrets.HASHNODE_ACCESS_TOKEN }}'
       - name: Get the publication url
         run: echo "The Publish url was ${{ steps.publish.outputs.url }}"
 ```
