@@ -30807,7 +30807,7 @@ const endpoint = 'https://gql.hashnode.com/'
 
 async function publishPost (postOptions) {
     try {
-        response = {
+        let response = {
             "id": "hashnodeId",
             "url": "https://hashnode.com/nerdthejohn"
         }
@@ -30827,7 +30827,7 @@ async function main () {
         const title = core.getInput('title', { required: true })
         const subtitle = core.getInput('subtitle')
         const markdownFile = core.getInput('markdown', { required: true });
-        markdownFile = "README.md"
+       
 
         const markdownBody = await fs.readFile(markdownFile, { encoding: 'utf-8' });
       
