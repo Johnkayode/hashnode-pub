@@ -1,15 +1,18 @@
 name: 'Publish Blog Post'
 description: 'Publishes blog post to Hashnode'
-author: 'nerdthejohn'
+author: 'Johnkayode'
 
 
 inputs:
   title:
     required: true
-    description: 'title of the post'
+    description: 'Title of the post'
   subtitle:
     required: false
-    description: 'description of the post'
+    description: 'Description of the post'
+  cover_image:
+    required: false
+    description: 'Cover image url for the post'
   publication_id:
     required: true
     description: 'The ID of publication the post belongs to.'

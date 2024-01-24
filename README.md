@@ -16,6 +16,10 @@ The title of the blog post.
 
 The subtitle or description of the blog post.
 
+`cover_image` (optional)
+
+The cover image URL for the post
+
 `publication_id` (required)
 
 The ID of the publication to which the post belongs.

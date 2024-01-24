@@ -4,7 +4,12 @@ const axios = require('axios');
 
 const endpoint = 'https://gql.hashnode.com/'
 
-
+/**
+ * Publishes a post using Hashnode GraphQL API.
+ *
+ * @param {Object} authOptions - Authentication options, containing an Authorization header.
+ * @param {Object} postOptions - Options for the post to be published.
+ */
 async function publishPost (authOptions, postOptions) {
 
     try {
@@ -25,7 +30,8 @@ async function publishPost (authOptions, postOptions) {
                 "subtitle": postOptions.subtitle,
                 "publicationId": postOptions.publicationId,
                 "contentMarkdown": postOptions.markdownBody,
-                "tags": postOptions.tags
+                "coverImageOptions": { coverImageURL: postOptions.coverImageURL },
+                "tags": postOptions.tags   
             }
         }
         const requestBody = {
@@ -42,17 +48,20 @@ async function publishPost (authOptions, postOptions) {
     }
 }
 
+/**
+ * Main function to read inputs and trigger the post publishing process.
+ */
 async function main () {
     try {
         const accessToken = core.getInput('access_token', { required: true })
        
         const publicationId = core.getInput('publication_id', { required: true })
         const title = core.getInput('title', { required: true })
-        const subtitle = core.getInput('subtitle')
         const markdownFile = core.getInput('markdown', { required: true });
+        const subtitle = core.getInput('subtitle')
+        const coverImageURL = core.getInput('cover_image')
 
         const tags = [] // TODO: Allow tags
-       
 
         const markdownBody = await fs.readFile(markdownFile, { encoding: 'utf-8' });
         const postOptions = {
@@ -60,6 +69,7 @@ async function main () {
             subtitle,
             publicationId,
             markdownBody,
+            coverImageURL,
             tags
         }
         authOptions = { "Authorization": accessToken }
