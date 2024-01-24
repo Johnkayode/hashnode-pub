@@ -38,10 +38,10 @@ async function publishPost (authOptions, postOptions) {
             query,
             variables
         };
-        let response = await axios.post(endpoint, requestBody, { headers: authOptions })
-
-        core.setOutput('id', response.data.publishPost.post.id)
-        core.setOutput('url', response.data.publishPost.post.url)
+        const response = await axios.post(endpoint, requestBody, { headers: authOptions })
+       
+        core.setOutput('id', response.data.data.publishPost.post.id)
+        core.setOutput('url', response.data.data.publishPost.post.url)
     
     } catch (error) {
       core.setFailed(error.message);
