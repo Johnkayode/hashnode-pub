@@ -8,33 +8,33 @@ You can use the action in your workflow by adding a step with `uses: Johnkayode/
 
 ## Inputs
 
-### `title` (required)
+`title` (required)
 
 The title of the blog post.
 
-### `subtitle` (optional)
+`subtitle` (optional)
 
 The subtitle or description of the blog post.
 
-### `publication_id` (required)
+`publication_id` (required)
 
 The ID of the publication to which the post belongs.
 
-### `markdown` (required)
+ `markdown` (required)
 
 Filepath to the markdown file containing the content of the blog post.
 
-### `access_token` (required)
+`access_token` (required)
 
 Hashnode developer access token. Obtain this token from your Hashnode account settings.
 
 ## Outputs
 
-### `id`
+`id`
 
 The ID of the newly published blog post.
 
-### `url`
+`url`
 
 The URL of the newly published blog post.
 
