@@ -103,7 +103,7 @@ jobs:
           title: Publish Notion Page
           publication_id: '[Publication ID (from URL)]'
           format: notion
-          markdown: '[URL to Notion page]'
+          source: '[URL to Notion page]'
           access_token: '${{ secrets.HASHNODE_ACCESS_TOKEN }}'
           notion_token: '${{ secrets.NOTION_TOKEN }}'
       - name: Get the publication url
