@@ -6,8 +6,8 @@ This GitHub Action allows you to automate the process of publishing a blog post 
 
 - [x] Markdown
 - [x] Notion
-- [ ] Medium
-- [ ] Dev.to
+- [x] Medium
+- [x] Dev.to
 - [ ] RSS
 
 
@@ -35,11 +35,11 @@ The ID of the publication to which the post belongs.
 
 `format` (required)
 
-Format of the content to be published [markdown, notion].
+Format of the content to be published [markdown, notion, medium, devto].
 
 `source` (required)
 
-File path (Markdown) or URL (Notion) of the content.
+File path (Markdown) or URL (Notion, Medium, Dev.to) of the content.
 
 `access_token` (required)
 
@@ -48,6 +48,10 @@ Hashnode developer access token. Obtain this token from your Hashnode account se
 `notion_token` (optional)
 
 Notion integration token (only required if format is notion). Read [here](https://developers.notion.com/docs/create-a-notion-integration) to create an integration.
+
+`devto_token` (optional)
+
+Dev.to API Key (only required if format is devto). Create one [here](https://dev.to/settings/extensions).
 
 ## Outputs
 

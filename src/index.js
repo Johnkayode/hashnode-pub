@@ -1,9 +1,37 @@
 const fs = require('fs/promises')
-const core = require('@actions/core');
+// const core = require('@actions/core');
 const axios = require('axios');
 
 const Notion = require('./notion')
+const Devto = require('./devto')
+const mediumToMarkdown = require('medium-to-markdown');
+
 const endpoint = 'https://gql.hashnode.com/'
+
+const core = {
+    getInput: (name, options) => {
+      // This is a simple mock for demonstration purposes
+      const inputValues = {
+        'access_token': 'your-access-token',
+        'publication_id': 'your-publication-id',
+        'title': 'Sample Title',
+        'subtitle': 'Sample Subtitle',
+        'cover_image': 'https://example.com/cover.jpg',
+        'format': 'devto',
+        'source': 'https://dev.to/johnkayode/how-things-work-shazam-2ka4',
+        'devto_token': "F4EHNvigSUYpJDMmt4xj4upT"
+      };
+  
+      if (options && options.required && !inputValues[name]) {
+        throw new Error(`Input '${name}' is required but not provided.`);
+      }
+  
+      return inputValues[name];
+    },
+    setFailed: message => console.error(`::error::${message}`),
+    debug: err => {throw err},
+  };
+  
 
 
 /**
@@ -37,6 +65,34 @@ async function NotionToMdString (token, source) {
         process.exit(1)
     }
    
+}
+
+/**
+ * Convert Dev.to article to markdown.
+ *
+ * @param {Object} token - Dev.to API Key
+ * @param {Object} source - Dev.to article url.
+ */
+async function DevtoToMdString (token, source) {
+    try {
+        devto = new Devto(token)
+        const markdown = await devto.getMarkdownBody(source)
+        return markdown
+    } catch ( error ) {
+        core.debug(error)
+        core.setFailed(error.message)
+        process.exit(1)
+    }
+}
+
+/**
+ * Convert Medium article to markdown.
+ *
+ * @param {Object} source - Medium article url.
+ */
+async function MediumToMdString (source) {
+    let markdown = await mediumToMarkdown.convertFromUrl(source)
+    return markdown
 }
 
 /**
@@ -102,6 +158,7 @@ async function main () {
         let format = core.getInput('format', { required: true })
         const source = core.getInput('source', { required: true })
         const notionToken = core.getInput('notion_token')
+        const devtoToken = core.getInput('devto_token')
 
 
         format = format.toLowerCase();
@@ -111,10 +168,19 @@ async function main () {
             core.setFailed("Required Input(s) missing")
             process.exit(1)
         }
+        if (format === 'devto' && !devtoToken) {
+            core.setFailed("Required Input(s) missing")
+            process.exit(1)
+        }
+
 
         const markdownBody = 
         format === 'notion'
         ? await NotionToMdString(notionToken, source)
+        : format === 'medium'
+        ? await MediumToMdString(source)
+        : format === 'devto'
+        ? await DevtoToMdString(devtoToken, source)
         : format === 'markdown'
         ? await MarkdownToMdString(source)
         : null;

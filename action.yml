@@ -17,16 +17,19 @@ inputs:
     required: true
     description: 'The ID of publication the post belongs to.'
   format:  
-    description: 'Format of the content to be published [markdown, notion]'
+    description: 'Format of the content to be published [markdown, notion, medium]'
     required: true
   source:
-    description: 'File path (Markdown) or URL (Notion) of the content'
+    description: 'File path (Markdown) or URL (Notion, Medium) of the content'
     required: true
   access_token:
     description: 'Hashnode developer access token'
     required: true
   notion_token:
     description: 'Notion integration token (only required if format is notion)'
+    required: false
+  devto_token:
+    description: 'Devto API Key (only required if format is devto)'
     required: false
 
 outputs:
