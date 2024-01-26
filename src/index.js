@@ -1,5 +1,5 @@
 const fs = require('fs/promises')
-// const core = require('@actions/core');
+const core = require('@actions/core');
 const axios = require('axios');
 
 const Notion = require('./notion')
@@ -7,31 +7,6 @@ const Devto = require('./devto')
 const mediumToMarkdown = require('medium-to-markdown');
 
 const endpoint = 'https://gql.hashnode.com/'
-
-const core = {
-    getInput: (name, options) => {
-      // This is a simple mock for demonstration purposes
-      const inputValues = {
-        'access_token': 'your-access-token',
-        'publication_id': 'your-publication-id',
-        'title': 'Sample Title',
-        'subtitle': 'Sample Subtitle',
-        'cover_image': 'https://example.com/cover.jpg',
-        'format': 'devto',
-        'source': 'https://dev.to/johnkayode/how-things-work-shazam-2ka4',
-        'devto_token': "F4EHNvigSUYpJDMmt4xj4upT"
-      };
-  
-      if (options && options.required && !inputValues[name]) {
-        throw new Error(`Input '${name}' is required but not provided.`);
-      }
-  
-      return inputValues[name];
-    },
-    setFailed: message => console.error(`::error::${message}`),
-    debug: err => {throw err},
-  };
-  
 
 
 /**
