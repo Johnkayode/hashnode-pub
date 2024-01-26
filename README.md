@@ -6,6 +6,10 @@ This GitHub Action allows you to automate the process of publishing a blog post 
 
 - [x] Markdown
 - [x] Notion
+- [] Medium
+- [] Dev.to
+- [] RSS
+
 
 ## Using the action
 
