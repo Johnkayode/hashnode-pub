@@ -1,5 +1,4 @@
 const axios = require('axios');
-const cheerio = require('cheerio');
 
 module.exports = class Devto {
     endpoint;
@@ -9,9 +8,20 @@ module.exports = class Devto {
       this.headers = {"api-key": token}
     }
 
+    stripURLTags(url) {
+        let parsedUrl = new URL(url)
+        parsedUrl.search = ""
+        // remove trailing slash
+        if (parsedUrl   .pathname.endsWith('/')) {
+            parsedUrl.pathname = url.pathname.slice(0, -1);
+        }
+        return parsedUrl.toString()
+    }
+
     getPageSlugFromURL(url) {
-        const urlArr = url.split('/'),
-        pageSlug = urlArr[urlArr.length - 1]
+        url = this.stripURLTags(url)
+        const urlArr = url.split('/')
+        let pageSlug = urlArr[urlArr.length - 1]
         return pageSlug
     }
 

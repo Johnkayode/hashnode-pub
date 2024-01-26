@@ -15,10 +15,20 @@ module.exports = class Notion {
       })
     }
 
+    stripURLTags(url) {
+        let parsedUrl = new URL(url)
+        parsedUrl.search = ""
+        // remove trailing slash
+        if (parsedUrl.pathname.endsWith('/')) {
+            parsedUrl.pathname = url.pathname.slice(0, -1);
+        }
+        return parsedUrl.toString()
+    }
+
     getPageIdFromURL(url) {
-        const urlArr = url.split('-'),
-        pageId = urlArr[urlArr.length - 1]
-        
+        url = this.stripURLTags(url)
+        const urlArr = url.split('-')
+        let pageId = urlArr[urlArr.length - 1]
         return pageId
     }
   

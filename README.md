@@ -8,7 +8,6 @@ This GitHub Action allows you to automate the process of publishing a blog post 
 - [x] Notion
 - [x] Medium
 - [x] Dev.to
-- [ ] RSS
 
 
 ## Using the action
