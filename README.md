@@ -7,7 +7,6 @@ This GitHub Action allows you to automate the process of publishing a blog post 
 - [x] Markdown
 - [x] Notion
 
-
 ## Using the action
 
 You can use the action in your workflow by adding a step with `uses: Johnkayode/hashnode-pub@v1.0.0`
