@@ -2,7 +2,7 @@
 
 This GitHub Action allows you to automate the process of publishing a blog post to Hashnode. It simplifies the steps needed to publish a post by taking care of authentication and interaction with the Hashnode API.
 
-## Supported Platforms
+## Supported Integrations
 
 - [x] Markdown
 - [x] Notion
