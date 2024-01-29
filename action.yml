@@ -13,6 +13,9 @@ inputs:
   cover_image:
     required: false
     description: 'Cover image url for the post'
+  tags:
+    required: false
+    description: 'Post tags'
   publication_id:
     required: true
     description: 'The ID of publication the post belongs to.'

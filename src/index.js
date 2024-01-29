@@ -8,11 +8,10 @@ const mediumToMarkdown = require('medium-to-markdown');
 
 const endpoint = 'https://gql.hashnode.com/'
 
-
 /**
  * Read Markdown file into a string.
  *
- * @param {Object} source - Filepath to Markdown.
+ * @param {string} source - Filepath to Markdown.
  */
 async function MarkdownToMdString (source) {
     const markdownBody = await fs.readFile(source, { encoding: 'utf-8' });
@@ -22,8 +21,8 @@ async function MarkdownToMdString (source) {
 /**
  * Convert Notion document to markdown.
  *
- * @param {Object} token - Notion token.
- * @param {Object} source - Notion document url.
+ * @param {string} token - Notion token.
+ * @param {string} source - Notion document url.
  */
 async function NotionToMdString (token, source) {
     try {
@@ -45,8 +44,8 @@ async function NotionToMdString (token, source) {
 /**
  * Convert Dev.to article to markdown.
  *
- * @param {Object} token - Dev.to API Key
- * @param {Object} source - Dev.to article url.
+ * @param {string} token - Dev.to API Key
+ * @param {string} source - Dev.to article url.
  */
 async function DevtoToMdString (token, source) {
     try {
@@ -63,7 +62,7 @@ async function DevtoToMdString (token, source) {
 /**
  * Convert Medium article to markdown.
  *
- * @param {Object} source - Medium article url.
+ * @param {string} source - Medium article url.
  */
 async function MediumToMdString (source) {
     let markdown = await mediumToMarkdown.convertFromUrl(source)
@@ -96,6 +95,7 @@ async function publishPost (authOptions, postOptions) {
                 "publicationId": postOptions.publicationId,
                 "contentMarkdown": postOptions.markdownBody,
                 "coverImageOptions": { coverImageURL: postOptions.coverImageURL },
+                "originalArticleURL": postOptions.originalArticleURL,
                 "tags": postOptions.tags   
             }
         }
@@ -118,6 +118,27 @@ async function publishPost (authOptions, postOptions) {
 }
 
 /**
+ * Convert comma seperated string of tags to array of tag objects.
+ *
+ * @param {string} token - Dev.to API Key
+ */
+function normalizeTags (tags) {
+    let tagArray = tags.split(",")
+    tagArray = tagArray.map((name) => {
+        const slug = name
+        .toLowerCase()
+        .trim()
+        .replace(/[^\w\s-]/g, '')
+        .replace(/[\s_-]+/g, '-')
+        .replace(/^-+|-+$/g, '');;
+        
+        return { name, slug };
+      });
+    
+    return tagArray;
+}
+
+/**
  * Main function to read inputs and trigger the post publishing process.
  */
 async function main () {
@@ -128,7 +149,7 @@ async function main () {
         const title = core.getInput('title', { required: true })
         const subtitle = core.getInput('subtitle')
         const coverImageURL = core.getInput('cover_image')
-        const tags = [] // TODO: Allow tags
+        let tags = core.getInput('tags') || []
 
         let format = core.getInput('format', { required: true })
         const source = core.getInput('source', { required: true })
@@ -159,6 +180,14 @@ async function main () {
         : format === 'markdown'
         ? await MarkdownToMdString(source)
         : null;
+
+        const originalArticleURL = 
+        format === 'notion' || format === 'devto' || format === 'medium' ? source : null
+
+        // normalize tags
+        if (tags.length) {
+            tags = normalizeTags(tags)
+        }
         
         const postOptions = {
             title,
@@ -166,6 +195,7 @@ async function main () {
             publicationId,
             markdownBody,
             coverImageURL,
+            originalArticleURL,
             tags
         }
         authOptions = { "Authorization": accessToken }

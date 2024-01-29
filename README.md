@@ -9,7 +9,6 @@ This GitHub Action allows you to automate the process of publishing a blog post 
 - [x] Medium
 - [x] Dev.to
 
-
 ## Using the action
 
 You can use the action in your workflow by adding a step with `uses: Johnkayode/hashnode-pub@v1.0.0`
@@ -27,6 +26,10 @@ The subtitle or description of the blog post.
 `cover_image` (optional)
 
 The cover image URL for the post
+
+`tags` (optional)
+
+Comma-seperated string for the post tags
 
 `publication_id` (required)
 
@@ -85,6 +88,7 @@ jobs:
           publication_id: '[Publication ID (from URL)]'
           format: markdown
           source: '[Path to Markdown file e.g README.md]'
+          tags: "api hackathon, software"
           access_token: '${{ secrets.HASHNODE_ACCESS_TOKEN }}'
       - name: Get the publication url
         run: echo "The Publish url was ${{ steps.publish.outputs.url }}"
